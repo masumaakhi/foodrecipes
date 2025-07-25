@@ -85,7 +85,7 @@ const RecipeGrid = () => {
     : recipes;
 
   return (
-    <div className="recipe-grid-container">
+    <div className="recipe-grid-container mt-[4rem]">
       <div className="recipe-grid-recipes">
         {filteredRecipes.map((recipe) => (
           <div key={recipe.id} className="recipe-card-recipes">

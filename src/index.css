@@ -1,13 +1,11 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: EBEEF8;
+  /* background-color: EBEEF8; */
   /* background: 235, 238, 248;
    */
 
@@ -19,7 +17,7 @@ body {
   /* overflow-y: hidden; */
   overflow-y: scroll;
   font-family: 'Inter', sans-serif;
-  background-color: #40798C;
+  /* background-color: #40798C; */
 }
 li{
   list-style: none;

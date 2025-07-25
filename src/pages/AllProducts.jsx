@@ -24,7 +24,7 @@ const AllProducts = () => {
 
   return (
     <>
-      <div className="product-section">
+      <div className="product-section mt-[3rem]">
         <div className="product-section__heading">
           <h4>Product list in your app</h4>
         </div>

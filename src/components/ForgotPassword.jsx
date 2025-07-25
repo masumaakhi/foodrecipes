@@ -19,8 +19,8 @@ const ForgotPassword = () => {
     setServerMessage("");
 
     const actionCodeSettings = {
-      url: "http://localhost:3001/signin", // ✅ change this to your production domain
-      handleCodeInApp: false, // Firebase default page will handle the reset
+      url: "http://localhost:3000/signin", // Update this to production if needed
+      handleCodeInApp: false,
     };
 
     try {
@@ -41,13 +41,18 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="reset-container" style={styles.container}>
-      <h2 style={styles.heading}>Reset Your Password</h2>
-      {serverMessage && <p style={styles.message}>{serverMessage}</p>}
+    <div className="max-w-md mx-auto my-[5rem] p-6  bg-opacity-70 backdrop-blur rounded-lg shadow-lg">
+      <h2 className="text-2xl font-semibold text-center text-gray-800 mb-4">
+        Reset Your Password
+      </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
-        <div style={styles.formGroup}>
-          <label>Email</label>
+      {serverMessage && (
+        <p className="text-center text-sm mb-4 text-gray-700">{serverMessage}</p>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <label className="block mb-1 font-medium text-gray-700">Email</label>
           <input
             type="email"
             {...register("email", {
@@ -57,63 +62,22 @@ const ForgotPassword = () => {
                 message: "Invalid email address",
               },
             })}
-            style={styles.input}
+            className="w-full px-4 py-2 bg-slate-300 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
-          {errors.email && <p style={styles.error}>{errors.email.message}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
         </div>
 
-        <button type="submit" style={styles.button}>
+        <button
+          type="submit"
+          className="w-full bg-orange-600 hover:bg-orange-800 text-white py-2 rounded font-semibold transition-colors"
+        >
           Send Reset Link
         </button>
       </form>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    maxWidth: "400px",
-    margin: "0 auto",
-    padding: "20px",
-    backgroundColor: "#f9f9f9",
-    borderRadius: "8px",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-  },
-  heading: {
-    textAlign: "center",
-    color: "#333",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  formGroup: {
-    marginBottom: "15px",
-  },
-  input: {
-    width: "100%",
-    padding: "10px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-  },
-  button: {
-    padding: "10px",
-    backgroundColor: "#ff5722",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  error: {
-    color: "red",
-    fontSize: "12px",
-  },
-  message: {
-    textAlign: "center",
-    marginBottom: "10px",
-    color: "#555",
-    fontSize: "14px",
-  },
 };
 
 export default ForgotPassword;

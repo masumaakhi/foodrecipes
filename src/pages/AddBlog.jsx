@@ -74,7 +74,7 @@ const AddBlog = () => {
   };
 
   return (
-    <div className="blog-form-container">
+    <div className="blog-form-container mt-[7rem]">
       <h2>Add a New Blog</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

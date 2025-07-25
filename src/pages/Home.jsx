@@ -1,5 +1,5 @@
 import React from 'react'
-import Header from '../components/Header'
+import Header from '../components/header/HeaderView'
 import AddRecipes from '../components/AddRecipes'
 import TrendingRecipes from '../components/TrendingRecipes'
 import ExploreBlog from '../components/ExploreBlog'

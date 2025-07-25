@@ -126,7 +126,7 @@ const AddRecipe = () => {
   };
 
   return (
-    <div className="recipe-form-container">
+    <div className="recipe-form-container mt-[5rem]">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Recipe Title:</label>

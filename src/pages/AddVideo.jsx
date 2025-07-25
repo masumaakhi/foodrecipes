@@ -31,7 +31,7 @@ const AddVideo = () => {
   };
 
   return (
-    <div>
+    <div className='mt-[5rem]'>
       <h2>Add New Video</h2>
       <form onSubmit={handleAddVideo}>
         <div>

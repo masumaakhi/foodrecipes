@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Link } from "react-router-dom";
-import MyAccount from "./MyAccount"; // Your MyAccount dropdown component
+import MyAccount from "./MyAccount";
 
 const User = () => {
   const [user, setUser] = useState(null);
   const auth = getAuth();
 
-  // Listen for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-
-    // Cleanup the listener on component unmount
     return () => unsubscribe();
   }, [auth]);
 
   return (
-    <div className="header">
+    <div>
       {user ? (
-        // Show "My Account" dropdown if user is authenticated
         <MyAccount />
       ) : (
-        // Show "Sign In" and "Sign Up" if no user is authenticated
-        <div className="auth-buttons">
-          <a href="/signin" className="auth-button"><Link to="/signin">Log In</Link></a>
-          <a href="/signup" className="auth-button"><Link to= "/signup">Sign Up</Link></a>
+        <div className="flex items-center space-x-4">
+          <Link
+            to="/signin"
+            className="text-gray-700 hover:text-orange-500 font-medium transition duration-300 text-decoration-none"
+          >
+            Log In
+          </Link>
+          <Link
+            to="/signup"
+            className="text-gray-700 hover:text-orange-500 font-medium transition duration-300 text-decoration-none"
+          >
+            Sign Up
+          </Link>
         </div>
       )}
     </div>

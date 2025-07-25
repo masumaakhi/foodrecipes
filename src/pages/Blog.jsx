@@ -27,9 +27,9 @@ const Blog = () => {
   
 
   return (
-    <div>
+    <div className="blog-container mt-[5rem]">
       <h2>Blog List</h2>
-      <div className="blog-grid">
+      <div className="blog-grid mt-[4rem]">
         {blogs.map((blog) => (
           <div key={blog.id} className="blog-card">
             <Link to={`/blog/${blog.id}`}>
