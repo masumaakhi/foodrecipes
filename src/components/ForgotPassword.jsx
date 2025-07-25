@@ -19,7 +19,7 @@ const ForgotPassword = () => {
     setServerMessage("");
 
     const actionCodeSettings = {
-      url: "http://localhost:3000/signin", // Update this to production if needed
+      url: "https://foodrecipeesa.netlify.app/signin", // Update this to production if needed
       handleCodeInApp: false,
     };
 
