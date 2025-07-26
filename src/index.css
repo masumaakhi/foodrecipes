@@ -21,6 +21,14 @@ body {
 }
 li{
   list-style: none;
+  text-decoration: none;
+}
+li a{
+  text-decoration: none;
+  color: black;
+}
+Link{
+  text-decoration: none;
 }
 
 a{
@@ -482,17 +490,8 @@ a{
 
 .footer-container{
   padding: 20px;
-  /* margin-left: 4.5rem; */
-  /* margin-top: 4rem; */
-  /* margin-bottom: 4rem; */
   background-color: #f1f7f9;
 }
-/* .footer-grid-card{
-  display: flex;
-  justify-content: flex-end;
-  gap: 34px;
-  margin-right: 6rem;
-} */
 .footer-grid-card a{
   text-decoration: none;
 }
@@ -853,9 +852,8 @@ h2 {
 }
 
 button[type="submit"] {
-  /* width: 20px; */
   padding: 15px;
-  background-color: #bd5019;
+  background-color: #bc693f;
   color: #fff;
   font-size: 1.2em;
   border: none;
@@ -865,7 +863,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #218838;
+  background-color: #fc722d;
 }
 
 
@@ -923,7 +921,6 @@ textarea {
 }
 
 button {
-  background-color: #5cb85c;
   color: white;
   border: none;
   padding: 10px;
@@ -932,9 +929,9 @@ button {
   font-size: 14px;
 }
 
-button:hover {
-  background-color: #4cae4c;
-}
+/* button:hover {
+
+} */
 
 button.cancel {
   background-color: #d9534f;

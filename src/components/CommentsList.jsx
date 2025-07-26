@@ -5,21 +5,22 @@ import ReplyForm from './ReplyForm';
 
 const CommentsList = () => {
   const [comments, setComments] = useState([]);
-  const [replyFormVisible, setReplyFormVisible] = useState(null); // To manage reply form visibility
-  const [repliesVisible, setRepliesVisible] = useState({}); // To manage visibility of replies for each comment
+  const [replyFormVisible, setReplyFormVisible] = useState(null);
+  const [repliesVisible, setRepliesVisible] = useState({});
 
   useEffect(() => {
     const q = query(collection(db, 'comments'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const commentsData = [];
-      querySnapshot.forEach((doc) => commentsData.push({ ...doc.data(), id: doc.id }));
+      querySnapshot.forEach((doc) =>
+        commentsData.push({ ...doc.data(), id: doc.id })
+      );
       setComments(commentsData);
     });
-  
-    return () => unsubscribe();
-  }, [])
 
-  // Like a comment
+    return () => unsubscribe();
+  }, []);
+
   const handleLike = async (id, currentLikes) => {
     const commentRef = doc(db, 'comments', id);
     await updateDoc(commentRef, {
@@ -27,7 +28,6 @@ const CommentsList = () => {
     });
   };
 
-  // Reply to a comment
   const handleReply = async (id, replyText) => {
     const commentRef = doc(db, 'comments', id);
     const commentDoc = await getDoc(commentRef);
@@ -45,52 +45,84 @@ const CommentsList = () => {
     }
   };
 
-  // Toggle reply visibility
   const toggleReplies = (id) => {
-    setRepliesVisible((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
+    setRepliesVisible((prev) => ({
+      ...prev,
+      [id]: !prev[id],
     }));
   };
 
   return (
-    <div className="comments-section">
+    <div className="mt-8 space-y-6">
       {comments.map((comment) => (
-        <div key={comment.id} className="comment">
-          <img src={comment.userImage} alt={comment.userName} className="user-image" />
-          <div className="comment-content">
-            <p><strong>{comment.userName}</strong></p>
-            <p>{comment.text}</p>
+        <div
+          key={comment.id}
+          className="flex items-start gap-4 pb-6 border-b border-gray-200"
+        >
+          <img
+            src={comment.userImage}
+            alt={comment.userName}
+            className="w-10 h-10 rounded-full object-cover"
+          />
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-gray-800">
+              {comment.userName}
+            </p>
+            <p className="text-gray-700 text-sm mt-1">{comment.text}</p>
 
-            {/* Like, Reply, and Reply Count */}
-            <button onClick={() => handleLike(comment.id, comment.likes)}>Like ({comment.likes})</button>
-            <button onClick={() => setReplyFormVisible(comment.id)}>Reply</button>
-            <button onClick={() => toggleReplies(comment.id)}>
-              {comment.replies?.length ? `View Replies (${comment.replies.length})` : 'No Replies'}
-            </button>
+            <div className="flex gap-4 mt-3 text-sm text-blue-600">
+              <button
+                onClick={() => handleLike(comment.id, comment.likes)}
+                className="hover:underline"
+              >
+                Like ({comment.likes})
+              </button>
+              <button
+                onClick={() => setReplyFormVisible(comment.id)}
+                className="hover:underline"
+              >
+                Reply
+              </button>
+              <button
+                onClick={() => toggleReplies(comment.id)}
+                className="hover:underline"
+              >
+                {comment.replies?.length
+                  ? `View Replies (${comment.replies.length})`
+                  : 'No Replies'}
+              </button>
+            </div>
 
-            {/* Reply form, visible only for the selected comment */}
             {comment.id === replyFormVisible && (
-              <ReplyForm
-                onCancel={() => setReplyFormVisible(null)}
-                onSubmit={(replyText) => {
-                  handleReply(comment.id, replyText);
-                  setReplyFormVisible(null);
-                }}
-              />
-            )}
-
-            {/* Toggle Display Replies */}
-            {repliesVisible[comment.id] && comment.replies && comment.replies.length > 0 && (
-              <div className="replies">
-                {comment.replies.map((reply, index) => (
-                  <div key={index} className="reply">
-                    <img src={reply.userImage} alt={reply.userName} className="user-image" />
-                    <p><strong>{reply.userName}</strong>: {reply.text}</p>
-                  </div>
-                ))}
+              <div className="mt-4">
+                <ReplyForm
+                  onCancel={() => setReplyFormVisible(null)}
+                  onSubmit={(replyText) => {
+                    handleReply(comment.id, replyText);
+                    setReplyFormVisible(null);
+                  }}
+                />
               </div>
             )}
+
+            {repliesVisible[comment.id] &&
+              comment.replies &&
+              comment.replies.length > 0 && (
+                <div className="mt-4 pl-6 border-l-2 border-gray-300 space-y-3">
+                  {comment.replies.map((reply, index) => (
+                    <div key={index} className="flex gap-3 items-start">
+                      <img
+                        src={reply.userImage}
+                        alt={reply.userName}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                      <p className="text-sm text-gray-800">
+                        <strong>{reply.userName}</strong>: {reply.text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
           </div>
         </div>
       ))}

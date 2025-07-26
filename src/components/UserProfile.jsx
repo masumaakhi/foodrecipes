@@ -4,21 +4,13 @@ import SignOutButton from "./SignOut";
 
 const UserProfile = () => {
   const auth = getAuth();
-  const user = auth.currentUser; // Get the current user
+  const user = auth.currentUser;
   const [name, setName] = useState(user?.displayName || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [bio, setBio] = useState(""); // Assume there's no default bio initially
+  const [email] = useState(user?.email || "");
+  const [bio, setBio] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-  const clearProfile = () => {
-    setName("");
-    setEmail("");
-    setBio("");
-  };
-
+  const handleEditClick = () => setIsEditing(true);
 
   const handleSaveClick = () => {
     updateProfile(user, { displayName: name })
@@ -33,147 +25,96 @@ const UserProfile = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
-    setName(user?.displayName || ""); // Reset to original name
-    setBio(""); // Reset bio if necessary
+    setName(user?.displayName || "");
+    setBio("");
+  };
+
+  const clearProfile = () => {
+    setName("");
+    setBio("");
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>User Profile</h2>
+    <div className="max-w-md mx-auto mt-24 mb-3  bg-white shadow-lg rounded-lg p-6 text-center">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">User Profile</h2>
 
       {/* Profile Picture */}
-      <div style={styles.profileImageContainer}>
+      <div className="flex justify-center mb-6">
         <img
           src={user?.photoURL || "https://via.placeholder.com/150"}
           alt="Profile"
-          style={styles.profileImage}
+          className="w-32 h-32 rounded-full object-cover border-2 border-orange-400"
         />
       </div>
 
       {/* User Info */}
-      <div style={styles.info}>
-        <label style={styles.label}>Name:</label>
-        {isEditing ? (
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            style={styles.input}
-          />
-        ) : (
-          <p>{name}</p>
-        )}
+      <div className="text-left space-y-4">
+        <div>
+          <label className="block text-sm font-semibold text-gray-700">Name:</label>
+          {isEditing ? (
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 outline-none"
+            />
+          ) : (
+            <p className="text-gray-800">{name}</p>
+          )}
+        </div>
 
-        <label style={styles.label}>Email:</label>
-        <p>{email}</p>
+        <div>
+          <label className="block text-sm font-semibold text-gray-700">Email:</label>
+          <p className="text-gray-800">{email}</p>
+        </div>
 
-        <label style={styles.label}>Bio:</label>
+        <div>
+          <label className="block text-sm font-semibold text-gray-700">Bio:</label>
+          {isEditing ? (
+            <textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md resize-none h-24 focus:ring-2 focus:ring-orange-500 outline-none"
+            />
+          ) : (
+            <p className="text-gray-800">{bio || "No bio available"}</p>
+          )}
+        </div>
+      </div>
+
+      {/* Sign out */}
+      <div className="mt-6">
+        <SignOutButton clearProfile={clearProfile} />
+      </div>
+
+      {/* Buttons */}
+      <div className="mt-6 space-x-4">
         {isEditing ? (
-          <textarea
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            style={styles.textarea}
-          />
+          <>
+            <button
+              onClick={handleSaveClick}
+              className="bg-orange-500 text-white font-semibold px-6 py-2 rounded-md hover:bg-orange-600"
+            >
+              Save
+            </button>
+            <button
+              onClick={handleCancelClick}
+              className="bg-red-500 text-white font-semibold px-6 py-2 rounded-md hover:bg-red-600"
+            >
+              Cancel
+            </button>
+          </>
         ) : (
-          <p>{bio || "No bio available"}</p>
+          <button
+            onClick={handleEditClick}
+            className="bg-green-500 text-white font-semibold px-6 py-2 rounded-md hover:bg-green-600"
+          >
+            Edit Profile
+          </button>
         )}
       </div>
-      <div><SignOutButton clearProfile={clearProfile} /></div>
-
-      {/* Buttons for edit/save/cancel */}
-      {isEditing ? (
-        <div style={styles.buttonGroup}>
-          <button onClick={handleSaveClick} style={styles.saveButton}>
-            Save
-          </button>
-          <button onClick={handleCancelClick} style={styles.cancelButton}>
-            Cancel
-          </button>
-        </div>
-      ) : (
-        <button onClick={handleEditClick} style={styles.editButton}>
-          Edit Profile
-        </button>
-      )}
     </div>
   );
-};
-
-// Styles
-const styles = {
-  container: {
-    maxWidth: "500px",
-    margin: "0 auto",
-    padding: "20px",
-    backgroundColor: "#f9f9f9",
-    borderRadius: "8px",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-    textAlign: "center",
-  },
-  heading: {
-    color: "#333",
-    marginBottom: "20px",
-  },
-  profileImageContainer: {
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: "20px",
-  },
-  profileImage: {
-    width: "150px",
-    height: "150px",
-    borderRadius: "50%",
-    objectFit: "cover",
-  },
-  info: {
-    textAlign: "left",
-  },
-  label: {
-    fontWeight: "bold",
-  },
-  input: {
-    width: "100%",
-    padding: "8px",
-    margin: "10px 0",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-  },
-  textarea: {
-    width: "100%",
-    padding: "8px",
-    margin: "10px 0",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-    height: "80px",
-  },
-  buttonGroup: {
-    marginTop: "20px",
-  },
-  editButton: {
-    padding: "10px 20px",
-    backgroundColor: "#4CAF50",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  saveButton: {
-    padding: "10px 20px",
-    backgroundColor: "#4CAF50",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    marginRight: "10px",
-  },
-  cancelButton: {
-    padding: "10px 20px",
-    backgroundColor: "#f44336",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
 };
 
 export default UserProfile;

@@ -1,110 +1,3 @@
-// // import React, { useState } from 'react';
-
-// // // Individual Comment Component
-// // const CommentItem = ({ comment }) => {
-// //   return (
-// //     <div className="comment-item">
-// //       <div className="comment-header">
-// //         <img src={comment.avatar} alt={comment.author} className="avatar" />
-// //         <div className="comment-info">
-// //           <h4>{comment.author}</h4>
-// //           <span>{comment.time}</span>
-// //         </div>
-// //       </div>
-// //       <p>{comment.text}</p>
-// //       <div className="comment-actions">
-// //         <span>Reply</span> | <span>Quote</span> | <span>{comment.likes} Likes</span>
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // // Comment List Component
-// // const CommentList = () => {
-// //   const [comments, setComments] = useState([
-// //     {
-// //       id: 1,
-// //       author: "Julianne Uwi",
-// //       time: "6 mins ago",
-// //       text: "Synth pabeard tilnes chilwave glossier.",
-// //       avatar: "avatar1-url-here",
-// //       likes: 12
-// //     },
-// //     {
-// //       id: 2,
-// //       author: "Qu Xun",
-// //       time: "9 mins ago",
-// //       text: "Synth pastel chilwave pizza 🍕",
-// //       avatar: "avatar2-url-here",
-// //       likes: 8
-// //     },
-// //     // Add more comment objects
-// //   ]);
-
-// //   const loadMoreComments = () => {
-// //     // Functionality to load more comments
-// //   };
-
-// //   return (
-// //     <div className="comment-section">
-// //       <h2>Comments ({comments.length})</h2>
-// //       <div className="comment-list">
-// //         {comments.map((comment) => (
-// //           <CommentItem key={comment.id} comment={comment} />
-// //         ))}
-// //       </div>
-// //       <button className="load-more" onClick={loadMoreComments}>
-// //         Load 25 more comments
-// //       </button>
-// //     </div>
-// //   );
-// // };
-
-// // // Comment Form Component
-// // const CommentForm = () => {
-// //   return (
-// //     <div className="comment-form">
-// //       <textarea placeholder="Write a comment..."></textarea>
-// //       <button className="post-comment">Post comment</button>
-// //     </div>
-// //   );
-// // };
-
-// // // Main Comments Section
-// // const ReComment = () => {
-// //   return (
-// //     <div className="comments-container">
-// //       <CommentList />
-// //       <CommentForm />
-// //     </div>
-// //   );
-// // };
-
-// // export default ReComment;
-
-// // App.js
-// import React, { useState } from 'react';
-// import CommentForm from './CommentForm';
-// import CommentsList from './CommentsList';
-
-// const ReComment = () => {
-//   const [showCommentForm, setShowCommentForm] = useState(false);
-
-//   return (
-//     <div className="app">
-//       <h1>Comment System</h1>
-//       <button onClick={() => setShowCommentForm(true)}>Post a Comment</button>
-//       {showCommentForm && (
-//         <CommentForm onCancel={() => setShowCommentForm(false)} />
-//       )}
-//       <CommentsList />
-//     </div>
-//   );
-// };
-
-// export default ReComment;
-
-
 import React, { useState, useEffect } from 'react';
 import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -121,7 +14,7 @@ const ReComment = ({ recipeId }) => {
 
     const q = query(
       collection(db, 'comments'),
-      where('recipeId', '==', recipeId), // Filter comments by recipeId
+      where('recipeId', '==', recipeId),
       orderBy('createdAt', 'desc')
     );
 
@@ -137,21 +30,30 @@ const ReComment = ({ recipeId }) => {
   }, [recipeId]);
 
   return (
-    <div className="comments-section">
-      <h2>Comments</h2>
+    <div className="mt-10 p-4 bg-white shadow-md rounded-lg">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-6">Comments</h2>
 
       {/* Display existing comments */}
       <CommentsList comments={comments} />
 
       {/* Button to open the comment form */}
-      <button onClick={() => setShowCommentForm(true)}>Post a Comment</button>
+      {!showCommentForm && (
+        <button
+          onClick={() => setShowCommentForm(true)}
+          className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm transition"
+        >
+          Post a Comment
+        </button>
+      )}
 
-      {/* Show CommentForm when the form is open */}
+      {/* Show CommentForm when open */}
       {showCommentForm && (
-        <CommentForm
-          recipeId={recipeId}
-          onCancel={() => setShowCommentForm(false)}
-        />
+        <div className="mt-4">
+          <CommentForm
+            recipeId={recipeId}
+            onCancel={() => setShowCommentForm(false)}
+          />
+        </div>
       )}
     </div>
   );

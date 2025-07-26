@@ -9,7 +9,6 @@ const RecipeGrid = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
-    // Fetch Recipes
     const fetchRecipes = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'recipes'));
@@ -23,7 +22,6 @@ const RecipeGrid = () => {
       }
     };
 
-    // Fetch Categories
     const fetchCategories = async () => {
       try {
         const categorySnapshot = await getDocs(collection(db, 'categories'));
@@ -41,7 +39,6 @@ const RecipeGrid = () => {
     fetchCategories();
   }, []);
 
-  // Function to handle the like button
   const handleLike = async (recipeId, currentLikes) => {
     try {
       const recipeRef = doc(db, 'recipes', recipeId);
@@ -60,7 +57,6 @@ const RecipeGrid = () => {
     }
   };
 
-  // Function to handle the rating
   const handleRating = async (recipeId, newRating) => {
     try {
       const recipeRef = doc(db, 'recipes', recipeId);
@@ -79,41 +75,62 @@ const RecipeGrid = () => {
     }
   };
 
-  // Filter recipes based on selected category
   const filteredRecipes = selectedCategory
     ? recipes.filter((recipe) => recipe.category === selectedCategory)
     : recipes;
 
   return (
-    <div className="recipe-grid-container mt-[4rem]">
-      <div className="recipe-grid-recipes">
+    <div className="px-6 mt-24 mb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {filteredRecipes.map((recipe) => (
-          <div key={recipe.id} className="recipe-card-recipes">
+          <div
+            key={recipe.id}
+            className="bg-[#EBEEF8] border border-gray-200 rounded-lg shadow-md -translate-x-1 hover:-translate-y-2 transition-transform max-w-[600px] w-full mx-auto"
+          >
             <Link to={`/recipe/${recipe.id}`}>
-              <img src={recipe.imageUrl} alt={recipe.title} className="recipe-image-recipes" />
-              
+              <img
+                src={recipe.imageUrl}
+                alt={recipe.title}
+                className="w-full h-64  object-fill rounded-t-lg"
+              />
             </Link>
-            <div className="rating-stars">
+
+            <div className="p-4">
+              <div className="flex gap-1 mb-2">
                 {[...Array(5)].map((_, index) => (
                   <span
                     key={index}
-                    className={index < (recipe.rating || 0) ? 'star filled' : 'star'}
+                    className={`text-xl cursor-pointer transition-colors ${
+                      index < (recipe.rating || 0) ? 'text-yellow-500' : 'text-gray-300'
+                    }`}
                     onClick={() => handleRating(recipe.id, index + 1)}
                   >
                     ★
                   </span>
                 ))}
               </div>
-              <h3>{recipe.title}</h3>
-            <div className="recipe-info-recipes">
-              <p>By {recipe.authorName}</p>
-              <p>{recipe.description.substring(0, 120)}....</p>
-              {/* <p>👍 {recipe.likes || 0} likes</p>
-              <button onClick={() => handleLike(recipe.id, recipe.likes || 0)}>Like</button> */}
+
+              <h3 className="text-xl font-semibold text-gray-800 mb-1">{recipe.title}</h3>
+              <div className="text-sm text-gray-600 ml-1">
+                <p>By {recipe.authorName}</p>
+                <p className="mt-1">{recipe.description.substring(0, 120)}...</p>
+              </div>
+              {/* Optional Like Button: Uncomment to show */}
+              {/* <div className="mt-2 flex items-center gap-2">
+                <button
+                  onClick={() => handleLike(recipe.id, recipe.likes || 0)}
+                  className="text-sm px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                >
+                  👍 Like
+                </button>
+                <span className="text-gray-700 text-sm">{recipe.likes || 0} likes</span>
+              </div> */}
             </div>
           </div>
         ))}
-        {filteredRecipes.length === 0 && <p>No recipes available in this category.</p>}
+        {filteredRecipes.length === 0 && (
+          <p className="text-gray-500 text-center col-span-full">No recipes available in this category.</p>
+        )}
       </div>
     </div>
   );

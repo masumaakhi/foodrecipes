@@ -52,7 +52,7 @@ export const router = createBrowserRouter([
             {path: "/blog/:id", element: <BlogDetails />},
             {path: "/videolist", element: <VideoList />},
             {path: "/video/:videoId", element: <VideoDetails />},
-            {path: "addvideo", element: <AddVideo />},
+            {path: "/addvideo", element: <AddVideo />},
             {path: "allcategory", element: <AllCategories />},
             {path: "/category/:categoryName", element: <CategoryRecipes />},
             { path: "/forgotpassword", element: <ForgotPassword />}

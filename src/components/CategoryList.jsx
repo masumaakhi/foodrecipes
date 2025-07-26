@@ -1,4 +1,3 @@
-// CategoryList.js
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
@@ -16,7 +15,6 @@ const CategoryList = () => {
           ...doc.data(),
         }));
 
-        // Group by category and select the most liked recipe in each
         const categoryMap = {};
         recipesData.forEach((recipe) => {
           const { category, likes } = recipe;
@@ -25,7 +23,6 @@ const CategoryList = () => {
           }
         });
 
-        // Set the top liked recipe for each category and limit to 6
         setCategoriesWithTopRecipes(Object.values(categoryMap).slice(0, 6));
       } catch (error) {
         console.error("Error fetching top liked recipes by category:", error);
@@ -36,25 +33,33 @@ const CategoryList = () => {
   }, []);
 
   return (
-    <div className="category-list">
-      <h2>Popular Categories</h2>
-      <Link to="/allcategory" className="view-more-link">View more</Link>
-      <div className="categories-grid">
+    <div className="max-w-[86rem] mx-auto px-6 py-12">
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-3xl font-semibold text-gray-800">Popular Categories</h2>
+        <Link
+          to="/allcategory"
+          className="text-[#681f28] no-underline text-lg  hover:text-red-800 transition"
+        >
+          View more →
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {categoriesWithTopRecipes.map((recipe) => (
-          <div key={recipe.id} className="category-item">
-            <Link to={`/category/${recipe.category}`}>
-              <img 
-                src={recipe.imageUrl} 
-                alt={recipe.category} 
-                className="category-image" 
-                // style={{ borderRadius: "50%" }} 
+          <div key={recipe.id} className="text-center">
+            <Link to={`/category/${recipe.category}`} className="no-underline">
+              <img
+                src={recipe.imageUrl}
+                alt={recipe.category}
+                className="w-[10rem] h-[10rem] object-cover rounded-full mx-auto transition-transform duration-500 hover:scale-105 shadow-md"
               />
-              <p>{recipe.category}</p>
+              <p className="mt-4 text-xl font-medium text-gray-700 hover:text-[#681f28] transition cursor-pointer">
+                {recipe.category}
+              </p>
             </Link>
           </div>
         ))}
       </div>
-      
     </div>
   );
 };

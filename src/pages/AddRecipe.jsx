@@ -62,7 +62,7 @@ const AddRecipe = () => {
     if (image) {
       const storageRef = ref(storage, `images/${image.name}`);
       const uploadTask = uploadBytesResumable(storageRef, image);
-      
+
       uploadTask.on(
         'state_changed',
         null,
@@ -92,7 +92,7 @@ const AddRecipe = () => {
         instructions,
         imageUrl,
         nutrition,
-        category, // Save the input category
+        category,
         createdAt: new Date(),
       };
 
@@ -126,150 +126,69 @@ const AddRecipe = () => {
   };
 
   return (
-    <div className="recipe-form-container mt-[5rem]">
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Recipe Title:</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter recipe title"
-            required
-          />
+    <div className="max-w-2xl mx-auto bg-orange-50  p-6 rounded-lg shadow-lg my-16">
+      <h2 className="text-2xl font-bold mb-6 text-center">Add New Recipe</h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block font-medium mb-2">Title</label>
+          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required className="w-full border px-4 py-2 rounded-md" />
         </div>
 
-        <div className="form-group">
-          <label>Description:</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Describe your recipe"
-            maxLength="500"
-            required
-          />
+        <div>
+          <label className="block font-medium mb-2">Description</label>
+          <textarea value={description} onChange={(e) => setDescription(e.target.value)} maxLength="500" required className="w-full border px-4 py-2 rounded-md" />
         </div>
 
-        <div className="form-group">
-          <label>Category:</label>
-          <input
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            placeholder="Enter category"
-            required
-          />
+        <div>
+          <label className="block font-medium mb-2">Category</label>
+          <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} required className="w-full border px-4 py-2 rounded-md" />
         </div>
 
-        <div className="form-group">
-          <label>Ingredients:</label>
+        <div>
+          <label className="block font-medium mb-2">Ingredients</label>
           {ingredients.map((ingredient, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                placeholder="Enter ingredient"
-                value={ingredient.name}
-                onChange={(e) => handleIngredientChange(e, index)}
-                required
-              />
-            </div>
+            <input key={index} type="text" value={ingredient.name} onChange={(e) => handleIngredientChange(e, index)} required className="w-full border px-4 py-2 mb-2 rounded-md" placeholder={`Ingredient ${index + 1}`} />
           ))}
-          <button type="button" onClick={addIngredient}>Add Ingredient</button>
+          <button type="button" onClick={addIngredient} className="text-sm text-blue-600">+ Add Ingredient</button>
         </div>
 
-        <div className="form-group">
-          <label>Instructions:</label>
+        <div>
+          <label className="block font-medium mb-2">Instructions</label>
           {instructions.map((instruction, index) => (
-            <div key={index}>
-              <textarea
-                placeholder={`Step ${index + 1}`}
-                value={instruction.step}
-                onChange={(e) => handleInstructionChange(e, index)}
-                required
-              />
-            </div>
+            <textarea key={index} value={instruction.step} onChange={(e) => handleInstructionChange(e, index)} required className="w-full border px-4 py-2 mb-2 rounded-md" placeholder={`Step ${index + 1}`} />
           ))}
-          <button type="button" onClick={addInstruction}>Add Instruction</button>
+          <button type="button" onClick={addInstruction} className="text-sm text-blue-600">+ Add Step</button>
         </div>
 
-        <div className="form-group">
-          <label>Prep Time (Minutes):</label>
-          <input
-            type="number"
-            value={prepTime}
-            onChange={(e) => setPrepTime(e.target.value)}
-            placeholder="Enter prep time"
-            required
-          />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block font-medium mb-2">Prep Time (min)</label>
+            <input type="number" value={prepTime} onChange={(e) => setPrepTime(e.target.value)} required className="w-full border px-4 py-2 rounded-md" />
+          </div>
+          <div>
+            <label className="block font-medium mb-2">Cook Time (min)</label>
+            <input type="number" value={cookTime} onChange={(e) => setCookTime(e.target.value)} required className="w-full border px-4 py-2 rounded-md" />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label>Cook Time (Minutes):</label>
-          <input
-            type="number"
-            value={cookTime}
-            onChange={(e) => setCookTime(e.target.value)}
-            placeholder="Enter cook time"
-            required
-          />
+        <div>
+          <label className="block font-medium mb-2">Servings</label>
+          <input type="number" value={servings} onChange={(e) => setServings(e.target.value)} required className="w-full border px-4 py-2 rounded-md" />
         </div>
 
-        <div className="form-group">
-          <label>Servings:</label>
-          <input
-            type="number"
-            value={servings}
-            onChange={(e) => setServings(e.target.value)}
-            placeholder="Number of servings"
-            required
-          />
+        <div>
+          <label className="block font-medium mb-2">Nutrition</label>
+          {Object.keys(nutrition).map((key) => (
+            <input key={key} type="text" name={key} value={nutrition[key]} onChange={handleNutritionChange} placeholder={key.charAt(0).toUpperCase() + key.slice(1)} className="w-full border px-4 py-2 mb-2 rounded-md" />
+          ))}
         </div>
 
-        <div className="form-group">
-          <label>Nutrition Information:</label>
-          <input
-            type="text"
-            name="calories"
-            value={nutrition.calories}
-            onChange={handleNutritionChange}
-            placeholder="Calories"
-          />
-          <input
-            type="text"
-            name="fat"
-            value={nutrition.fat}
-            onChange={handleNutritionChange}
-            placeholder="Total Fat"
-          />
-          <input
-            type="text"
-            name="protein"
-            value={nutrition.protein}
-            onChange={handleNutritionChange}
-            placeholder="Protein"
-          />
-          <input
-            type="text"
-            name="carbs"
-            value={nutrition.carbs}
-            onChange={handleNutritionChange}
-            placeholder="Carbohydrates"
-          />
-          <input
-            type="text"
-            name="sugar"
-            value={nutrition.sugar}
-            onChange={handleNutritionChange}
-            placeholder="Sugar"
-          />
+        <div>
+          <label className="block font-medium mb-2">Upload Image</label>
+          <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full" />
         </div>
 
-        <div className="form-group">
-          <label>Upload Image:</label>
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
-        </div>
-
-        <button type="submit">Submit Recipe</button>
+        <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md font-semibold">Submit Recipe</button>
       </form>
     </div>
   );
