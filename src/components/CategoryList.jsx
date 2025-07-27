@@ -51,7 +51,7 @@ const CategoryList = () => {
               <img
                 src={recipe.imageUrl}
                 alt={recipe.category}
-                className="w-[10rem] h-[10rem] object-cover rounded-full mx-auto transition-transform duration-500 hover:scale-105 shadow-md"
+                className="sm:w-[8rem] sm:h-[8rem] w-[10rem] h-[10rem] object-cover rounded-full mx-auto transition-transform duration-500 hover:scale-105 shadow-md"
               />
               <p className="mt-4 text-xl font-medium text-gray-700 hover:text-[#681f28] transition cursor-pointer">
                 {recipe.category}

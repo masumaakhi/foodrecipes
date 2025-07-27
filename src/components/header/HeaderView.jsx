@@ -77,10 +77,10 @@ const HeaderView = () => {
             </span>
           </h1>
           <div className="flex gap-4 mt-6 justify-center md:justify-start">
-            <button className="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800">
+            <button className="sm:text-sm font-semibold bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800">
               ▶ Play video
             </button>
-            <button className="bg-gray-200 text-black px-4 py-2 rounded-full hover:bg-gray-300">
+            <button className="sm:text-sm font-semibold bg-gray-200 text-black px-4 py-2 rounded-full hover:bg-gray-300">
               🍽️ Order food
             </button>
           </div>
